@@ -4,4 +4,4 @@ A slack bot written in Golang to query the stock market. The price history is st
 the last run. The bot and the database will be deployed in Docker in swarm mode
 
 ## Diagram
-[Diagram of Project](images/Intersect%20Devops%20Project.jpeg)
+![Diagram of Project](https://github.com/frankielearns/intersectproject/blob/feature/intersect-devops-project-v1/images/Intersect%20Devops%20Project.jpeg)
