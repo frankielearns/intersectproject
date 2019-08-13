@@ -3,16 +3,17 @@ package main
 import (
 	"fmt"
 	"os"
+	"regexp"
+	"strconv"
 	"strings"
-    "github.com/piquette/finance-go/quote"
+
 	"github.com/nlopes/slack"
-    "strconv"
-    "regexp"
+	"github.com/piquette/finance-go/quote"
 )
 
 func FloatToString(input_num float64) string {
-    // to convert a float number to a string
-    return strconv.FormatFloat(input_num, 'f', 6, 64)
+	// to convert a float number to a string
+	return strconv.FormatFloat(input_num, 'f', 6, 64)
 }
 
 func main() {
@@ -64,7 +65,7 @@ func respond(rtm *slack.RTM, msg *slack.MessageEvent, prefix string) {
 	text = re.ReplaceAllString(text, " ")
 	stock, err := quote.Get(text)
 	if err == nil {
-		   response = fmt.Sprintln("The stock", stock.ShortName, "is at", FloatToString(stock.RegularMarketPrice))
-		   rtm.SendMessage(rtm.NewOutgoingMessage(response, msg.Channel))
-		}
+		response = fmt.Sprintln("The stock", stock.ShortName, "is at", FloatToString(stock.RegularMarketPrice))
+		rtm.SendMessage(rtm.NewOutgoingMessage(response, msg.Channel))
 	}
+}
