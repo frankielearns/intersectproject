@@ -64,7 +64,7 @@ func respond(rtm *slack.RTM, msg *slack.MessageEvent, prefix string) {
 	text = re.ReplaceAllString(text, " ")
 	stock, err := quote.Get(text)
 	if err == nil {
-						response = fmt.Sprintln("The stock", stock.ShortName, "is at", FloatToString(stock.RegularMarketPrice))
-						rtm.SendMessage(rtm.NewOutgoingMessage(response, msg.Channel))
+				 response = fmt.Sprintln("The stock", stock.ShortName, "is at", FloatToString(stock.RegularMarketPrice))
+				 rtm.SendMessage(rtm.NewOutgoingMessage(response, msg.Channel))
 		}
 	}
