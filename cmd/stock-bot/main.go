@@ -6,7 +6,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
-
+	L "github.com/frankielearns/intersectproject/cmd/database"
 	"github.com/nlopes/slack"
 	"github.com/piquette/finance-go/quote"
 )
@@ -37,7 +37,7 @@ Loop:
 				fmt.Printf("Message: %v\n", ev)
 				info := rtm.GetInfo()
 				prefix := fmt.Sprintf("<@%s> ", info.User.ID)
-
+				fmt.Println(info.User)
 				if ev.User != info.User.ID && strings.HasPrefix(ev.Text, prefix) {
 					respond(rtm, ev, prefix)
 				}
@@ -64,6 +64,8 @@ func respond(rtm *slack.RTM, msg *slack.MessageEvent, prefix string) {
 	re := regexp.MustCompile(`<http://.*\||>`)
 	text = re.ReplaceAllString(text, " ")
 	stock, err := quote.Get(text)
+	L.Databaseconnect(text, stock.RegularMarketPrice, "test")
+
 	if err == nil {
 		response = fmt.Sprintln("The stock", stock.ShortName, "is at", FloatToString(stock.RegularMarketPrice))
 		rtm.SendMessage(rtm.NewOutgoingMessage(response, msg.Channel))
