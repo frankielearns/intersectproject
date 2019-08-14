@@ -14,7 +14,7 @@ func Databaseconnect(stocktick string, price float64, username string) {
 	password := os.Getenv("DBPASS")
 	dbname := os.Getenv("DBNAME")
 	port := os.Getenv("DBPORT")
-	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
+	psqlInfo := fmt.Sprintf("host=%s port=%s user=%s "+
 		"password=%s dbname=%s sslmode=disable",
 		host, port, user, password, dbname)
 	db, err := sql.Open("postgres", psqlInfo)
