@@ -1,0 +1,24 @@
+# Use postgres/example user/password credentials
+version: '3.1'
+
+services:
+
+  db:
+    image: postgres:alpine
+    networks:
+      - backend
+    volumes:
+    - db-data:/var/lib/postgresql/data
+    - ./postgresql-init-scripts:/docker-entrypoint-initdb.d
+    ports:
+    - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASS}
+      POSTGRES_DB: stock
+      DB_USER: ${DBUSER}
+      DB_PASS: ${DBPASS}
+
+networks:
+  backend:
+volumes:
+  db-data:
