@@ -8,13 +8,16 @@ import (
 	_ "github.com/lib/pq"
 )
 
+const (
+	port = 5432
+)
+
 func Databaseconnect(stocktick string, price float64, username string) {
-	host := os.Getenv("DBHOST")
-	user := os.Getenv("DBUSER")
-	password := os.Getenv("DBPASS")
-	dbname := os.Getenv("DBNAME")
-	port := os.Getenv("DBPORT")
-	psqlInfo := fmt.Sprintf("host=%s port=%s user=%s "+
+	host := os.Getenv("DB_HOST")
+	user := os.Getenv("DB_USER")
+	password := os.Getenv("DB_PASS")
+	dbname := os.Getenv("DB_NAME")
+	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
 		"password=%s dbname=%s sslmode=disable",
 		host, port, user, password, dbname)
 	db, err := sql.Open("postgres", psqlInfo)

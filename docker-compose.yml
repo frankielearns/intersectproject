@@ -4,21 +4,60 @@ version: '3.1'
 services:
 
   db:
-    image: postgres:alpine
+    image: stock-db:latest
     networks:
       - backend
     volumes:
     - db-data:/var/lib/postgresql/data
-    - ./postgresql-init-scripts:/docker-entrypoint-initdb.d
     ports:
     - 5432:5432
     environment:
-      POSTGRES_PASSWORD: ${POSTGRES_PASS}
-      POSTGRES_DB: stock
-      DB_USER: ${DBUSER}
-      DB_PASS: ${DBPASS}
+      POSTGRES_PASSWORD_FILE: /run/secrets/secret-db-pass
+      POSTGRES_DB_FILE: /run/secrets/secret-db
+      DB_USER_FILE: /run/secrets/secret-db-user
+      DB_PASS_FILE: /run/secrets/secret-db-pass
+    secrets:
+      - secret-db-pass
+      - secret-db-user
+      - secret-db
+  
+  app:
+    image: stock-bot:latest
+    networks:
+      - frontend
+    ports:
+    - 443:443
+    - 80:80
+    environment:
+      SLACKTOKEN_FILE: /run/secrets/slack-token
+      DB_FILE: /run/secrets/secret-db
+      DB_USER_FILE: /run/secrets/secret-db-user
+      DB_PASS_FILE: /run/secrets/secret-db-pass
+      DB_HOST_NAME_FILE: /run/secrets/secret-db-host-name
+    secrets:
+      - secret-db-pass
+      - secret-db-user
+      - secret-db
+      - slack-token
+      - secret-db-host-name
+
+secrets:
+  secret-db-pass:
+    external: true
+  secret-db-user:
+    external: true
+  secret-db:
+    external: true
+  slack-token:
+    external: true
+  secret-db:
+    external: true
+  secret-db-host-name:
+    external: true
 
 networks:
   backend:
+  frontend:
 volumes:
   db-data:
+
