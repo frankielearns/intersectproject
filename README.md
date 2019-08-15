@@ -68,12 +68,13 @@ echo "mysupersecurepassword" | docker secret create secret-db -
 ```
 
 2. Export the following environment variables
+ ```
    DB_USER
    DB_HOST
    DB_NAME
    DB_PASS
    SLACKTOKEN
-   
+ ```   
 3. Build the Dockerfiles for the Database and Bot
 ```
     docker build -t stock-db:latest docker-database/
