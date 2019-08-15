@@ -1,0 +1,52 @@
+# Use postgres/example user/password credentials
+version: '3.1'
+
+services:
+
+  db:
+    image: stock-db:latest
+    networks:
+      - backend
+    volumes:
+    - db-data:/var/lib/postgresql/data
+    ports:
+    - 5432:5432
+    environment:
+      POSTGRES_PASSWORD_FILE: /run/secrets/secret-db-pass
+      POSTGRES_DB_FILE: /run/secrets/secret-db
+      DB_USER_FILE: /run/secrets/secret-db-user
+      DB_PASS_FILE: /run/secrets/secret-db-pass
+    secrets:
+      - secret-db-pass
+      - secret-db-user
+      - secret-db
+  
+  app:
+    image: stock-bot:latest
+    networks:
+      - frontend
+      - backend
+    ports:
+    - 443:443
+    - 80:80
+    environment:
+      SLACKTOKEN: ${SLACKTOKEN}
+      DB_NAME: ${DBNAME}
+      DB_USER: ${DBUSER}
+      DB_PASS: ${DBPASS}
+      DB_HOST: ${DBHOST}
+
+secrets:
+  secret-db-pass:
+    external: true
+  secret-db-user:
+    external: true
+  secret-db:
+    external: true
+
+networks:
+  backend:
+  frontend:
+volumes:
+  db-data:
+
